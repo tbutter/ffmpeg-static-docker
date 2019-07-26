@@ -4,6 +4,7 @@ ENV CC=clang
 ENV LDFLAGS="-L/work/lib -lm"
 ENV CFLAGS="-I/work/include"
 ENV PKG_CONFIG_PATH="/work/lib/pkgconfig"
+ENV FFMPEG_VERSION="4.1.4"
 
 RUN apt update && apt -y install wget build-essential g++ clang cmake && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 RUN mkdir /work
@@ -81,9 +82,9 @@ RUN wget -O av1.tar.gz "https://aomedia.googlesource.com/aom/+archive/refs/heads
   cmake -DENABLE_TESTS=0 -DCONFIG_PIC=1 -DCMAKE_INSTALL_PREFIX:PATH=/work /av1 && \
   make install
 
-RUN wget "http://ffmpeg.org/releases/ffmpeg-4.1.3.tar.bz2" && \
-  tar xjf ffmpeg-4.1.3.tar.bz2 && \
-  cd ffmpeg-4.1.3 && \
+RUN wget "http://ffmpeg.org/releases/ffmpeg-$FFMPEG_VERSION.tar.bz2" && \
+  tar xjf ffmpeg-$FFMPEG_VERSION.tar.bz2 && \
+  cd ffmpeg-$FFMPEG_VERSION && \
   ./configure  \
     --pkgconfigdir="/work/lib/pkgconfig" \
     --prefix=/work \
