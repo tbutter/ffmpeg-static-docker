@@ -4,7 +4,7 @@ ENV CC=clang
 ENV LDFLAGS="-L/work/lib -lm"
 ENV CFLAGS="-I/work/include"
 ENV PKG_CONFIG_PATH="/work/lib/pkgconfig"
-ENV FFMPEG_VERSION="4.1.4"
+ENV FFMPEG_VERSION="4.2"
 
 RUN apt update && apt -y install wget build-essential g++ clang cmake && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 RUN mkdir /work
