@@ -93,6 +93,7 @@ RUN wget "http://ffmpeg.org/releases/ffmpeg-$FFMPEG_VERSION.tar.bz2" && \
     --extra-cflags="-I/work/include -static" \
     --extra-ldflags="-L/work/lib -static" \
     --extra-libs="-lpthread -lm" \
+    --extra-ldexeflags=-pie \
     --enable-static \
     --enable-pic \
     --disable-debug \
