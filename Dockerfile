@@ -1,4 +1,4 @@
-FROM ubuntu AS build
+FROM ubuntu:20.04 AS build
 
 ENV CC=clang
 ENV LDFLAGS="-L/work/lib -lm"
