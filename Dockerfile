@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 AS build
+FROM debian:buster AS build
 
 ENV CC=clang
 ENV LDFLAGS="-L/work/lib -lm"
