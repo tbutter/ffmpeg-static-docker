@@ -1,13 +1,13 @@
-FROM debian:buster AS build
+FROM ubuntu:latest AS build
 
 ENV CC=clang
 ENV LDFLAGS="-L/work/lib -lm"
 ENV CFLAGS="-I/work/include"
 ENV PKG_CONFIG_PATH="/work/lib/pkgconfig"
-ENV FFMPEG_VERSION="4.3.1"
+ENV FFMPEG_VERSION="4.4"
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt update && apt -y install wget build-essential g++ clang cmake && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+RUN apt update && apt -y install wget git build-essential g++ clang cmake && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 RUN mkdir /work
 
 ENV PATH=/work/bin:$PATH
@@ -30,7 +30,7 @@ RUN wget -O libvpx1.8.0.tar.gz "https://github.com/webmproject/libvpx/archive/v1
   ./configure --prefix=/work --disable-unit-tests --disable-shared --enable-pic && \
   make install
 
-RUN wget "https://vorboss.dl.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz" && \
+RUN wget -O lame-3.100.tar.gz "https://sourceforge.net/projects/lame/files/lame/3.100/lame-3.100.tar.gz/download" && \
   tar xzvf lame-3.100.tar.gz && \
 	cd lame-3.100 && \
 	./configure --prefix=/work --disable-shared --enable-static --with-pic && \
@@ -68,12 +68,11 @@ RUN wget "http://pkgconfig.freedesktop.org/releases/pkg-config-0.29.2.tar.gz" &&
   ./configure --prefix=/work --with-pc-path=/work/lib/pkgconfig --with-internal-glib && \
   make install
 
-RUN wget -O vid_stabv0.9.8b.tar.gz "https://github.com/georgmartius/vid.stab/archive/release-0.98b.tar.gz" && \
-  tar xzvf vid_stabv0.9.8b.tar.gz && \
-  cd vid.stab-release-0.98b && \
-  perl -p -i -e "s/vidstab SHARED/vidstab STATIC/" CMakeLists.txt && \
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=/work && \
-  make install
+#RUN git clone https://github.com/georgmartius/vid.stab.git && \
+#  cd vid.stab && \
+#  perl -p -i -e "s/vidstab SHARED/vidstab STATIC/" CMakeLists.txt && \
+#  cmake -DCMAKE_INSTALL_PREFIX:PATH=/work && \
+#  make install
 
 RUN wget -O av1.tar.gz "https://aomedia.googlesource.com/aom/+archive/refs/heads/master.tar.gz" && \
   mkdir av1 && cd av1 && \
@@ -90,7 +89,7 @@ RUN wget "http://ffmpeg.org/releases/ffmpeg-$FFMPEG_VERSION.tar.bz2" && \
     --pkgconfigdir="/work/lib/pkgconfig" \
     --prefix=/work \
     --pkg-config-flags="--static" \
-    --extra-cflags="-I/work/include -static" \
+    --extra-cflags="-I/work/include -static -fopenmp" \
     --extra-ldflags="-L/work/lib -static" \
     --extra-libs="-lpthread -lm" \
     --extra-ldexeflags=-pie \
@@ -111,8 +110,8 @@ RUN wget "http://ffmpeg.org/releases/ffmpeg-$FFMPEG_VERSION.tar.bz2" && \
     --enable-libx264 \
     --enable-runtime-cpudetect \
     --enable-avfilter \
-    --enable-filters \
-    --enable-libvidstab && \
+    --enable-filters && \
+#    --enable-libvidstab && \
   make install
 RUN ldd /work/bin/ffmpeg || exit 0
 
