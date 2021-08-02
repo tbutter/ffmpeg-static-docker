@@ -14,7 +14,6 @@ on:
   pull_request:
 
 env:
-  # TODO: Change variable to your image's name.
   IMAGE_NAME: ffmpeg-static
 
 jobs:
@@ -25,8 +24,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Set up qemu
+        uses: docker/setup-qemu-action@v1
+        with:
+            image: tonistiigi/binfmt:latest
+            platforms: arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
       - name: Run tests
-        run: docker build . --file Dockerfile
+        run: docker buildx build --platform linux/arm64,linux/amd64 . --file Dockerfile
 
   
   push:
@@ -38,11 +46,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Set up qemu
+        uses: docker/setup-qemu-action@v1
+        with:
+            image: tonistiigi/binfmt:latest
+            platforms: arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
       - name: Build image dev
-        run: docker build . --file Dockerfile --target build --tag $IMAGE_NAME-dev
+        run: docker buildx build --platform linux/arm64,linux/amd64 . --file Dockerfile --target build --tag $IMAGE_NAME-dev
 
       - name: Build image
-        run: docker build . --file Dockerfile --tag $IMAGE_NAME-bin
+        run: docker buildx build --platform linux/arm64,linux/amd64 . --file Dockerfile --tag $IMAGE_NAME-bin
 
       - name: Log into registry
         run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
