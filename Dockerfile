@@ -24,9 +24,9 @@ RUN wget "https://www.nasm.us/pub/nasm/releasebuilds/2.14.02/nasm-2.14.02.tar.gz
   ./configure --prefix=/work --disable-shared --enable-static && \
   make install
 
-RUN wget -O libvpx1.8.0.tar.gz "https://github.com/webmproject/libvpx/archive/v1.8.0.tar.gz" && \
-  tar xzvf libvpx1.8.0.tar.gz && \
-  cd libvpx-1.8.0 && \
+RUN wget -O libvpx1.11.0.tar.gz "https://github.com/webmproject/libvpx/archive/v1.11.0.tar.gz" && \
+  tar xzvf libvpx1.11.0.tar.gz && \
+  cd libvpx-1.11.0 && \
   ./configure --prefix=/work --disable-unit-tests --disable-shared --enable-pic && \
   make install
 
