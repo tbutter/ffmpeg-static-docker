@@ -4,7 +4,6 @@ ENV CC=clang
 ENV LDFLAGS="-L/work/lib -lm"
 ENV CFLAGS="-I/work/include"
 ENV PKG_CONFIG_PATH="/work/lib/pkgconfig"
-ENV FFMPEG_VERSION="5.0"
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt -y install wget git build-essential g++ clang cmake && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
@@ -81,6 +80,8 @@ RUN wget -O av1.tar.gz "https://aomedia.googlesource.com/aom/+archive/refs/heads
   cd /aom_build && \
   cmake -DENABLE_TESTS=0 -DCONFIG_PIC=1 -DCMAKE_INSTALL_PREFIX:PATH=/work /av1 && \
   make install
+
+ARG FFMPEG_VERSION="7.0"
 
 RUN wget "http://ffmpeg.org/releases/ffmpeg-$FFMPEG_VERSION.tar.bz2" && \
   tar xjf ffmpeg-$FFMPEG_VERSION.tar.bz2 && \
