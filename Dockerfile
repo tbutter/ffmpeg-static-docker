@@ -1,4 +1,4 @@
-FROM ubuntu:latest AS build
+FROM ubuntu:focal AS build
 
 ENV CC=clang
 ENV LDFLAGS="-L/work/lib -lm"
