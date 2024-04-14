@@ -1,0 +1,31 @@
+{
+	"name": "partio",
+	"image": "mcr.microsoft.com/devcontainers/universal:2-focal",
+	"features": {
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "17",
+			"jdkDistro": "oracle",
+			"installMaven": "false",
+			"installGradle": "true"
+		},
+		"ghcr.io/tailscale/codespace/tailscale": {},
+		"ghcr.io/devcontainers/features/aws-cli:1": {},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+		"ghcr.io/devcontainers/features/node:1": { "version": "18"},
+		"ghcr.io/customink/codespaces-features/sam-cli:1": {},
+		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {
+			"version": "latest"
+		}
+	},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "java -version",
+	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	//"remoteUser": "vscode",
+	"runArgs": [
+		"--device=/dev/net/tun",
+		"--shm-size=1g",
+		"--init"
+	]
+}

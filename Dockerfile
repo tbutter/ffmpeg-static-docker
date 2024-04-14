@@ -86,6 +86,7 @@ ARG FFMPEG_VERSION="7.0"
 RUN wget "http://ffmpeg.org/releases/ffmpeg-$FFMPEG_VERSION.tar.bz2" && \
   tar xjf ffmpeg-$FFMPEG_VERSION.tar.bz2 && \
   cd ffmpeg-$FFMPEG_VERSION && \
+  sed -i s/-latomic// configure && \
   ./configure  \
     --pkgconfigdir="/work/lib/pkgconfig" \
     --prefix=/work \
@@ -93,7 +94,7 @@ RUN wget "http://ffmpeg.org/releases/ffmpeg-$FFMPEG_VERSION.tar.bz2" && \
     --extra-cflags="-I/work/include -static -fopenmp" \
     --extra-ldflags="-L/work/lib -static" \
     --extra-libs="-lpthread -lm" \
-    --extra-ldexeflags=-pie \
+    --extra-ldexeflags="-pie -static" \
     --enable-static \
     --enable-pic \
     --disable-debug \
