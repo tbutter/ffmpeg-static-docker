@@ -73,7 +73,7 @@ jobs:
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
 
-         # docker buildx build --platform linux/arm64,linux/amd64 . --file Dockerfile --target build --push --tag $IMAGE_ID-dev:$VERSION
-         docker buildx build --platform linux/amd64 . --file Dockerfile --target build --push --tag $IMAGE_ID-dev:$VERSION
-         # docker buildx build --platform linux/arm64,linux/amd64 . --file Dockerfile --push --tag $IMAGE_ID-bin:$VERSION
-         docker buildx build --platform linux/amd64 . --file Dockerfile --push --tag $IMAGE_ID-bin:$VERSION
+          # docker buildx build --platform linux/arm64,linux/amd64 . --file Dockerfile --target build --push --tag $IMAGE_ID-dev:$VERSION
+          docker buildx build --platform linux/amd64 . --file Dockerfile --target build --push --tag $IMAGE_ID-dev:$VERSION
+          # docker buildx build --platform linux/arm64,linux/amd64 . --file Dockerfile --push --tag $IMAGE_ID-bin:$VERSION
+          docker buildx build --platform linux/amd64 . --file Dockerfile --push --tag $IMAGE_ID-bin:$VERSION
